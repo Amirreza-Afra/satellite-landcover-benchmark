@@ -1,7 +1,6 @@
 from src.configs.loader import load_config
 
-from src.datasets.builder import build_dataset
-from src.models.builder import build_model
+from src.engine.trainer import Trainer
 
 import src.datasets
 import src.models
@@ -11,12 +10,9 @@ def main():
 
     cfg = load_config("src/configs/base.yaml")
 
-    dataset = build_dataset(cfg)
+    trainer = Trainer(cfg)
 
-    model = build_model(cfg)
-
-    print(dataset)
-    print(model)
+    trainer.fit()
 
 
 if __name__ == "__main__":
