@@ -216,3 +216,59 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# ==========================
+# Deep Learning / Research
+# ==========================
+
+# Datasets
+datasets/
+data/
+
+# Trained models
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# Experiment outputs
+outputs/
+experiments/
+runs/
+logs/
+
+# TensorBoard
+events.out.tfevents.*
+
+# Weights & Biases
+wandb/
+
+# MLflow
+mlruns/
+
+# Hydra
+.multirun/
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VSCode settings (اختیاری)
+.vscode/settings.json
+.vscode/launch.json
+
+# Temporary
+tmp/
+temp/
+*.tmp
