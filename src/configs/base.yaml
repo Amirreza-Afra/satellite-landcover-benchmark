@@ -23,3 +23,8 @@ optimizer:
 
 scheduler:
   name: cosine
+
+paths:
+  dataset_dir: ""
+  output_dir: ""
+  checkpoint_dir: ""
