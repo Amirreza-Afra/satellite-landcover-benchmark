@@ -1,10 +1,9 @@
-from configs.base import Config
+from src.configs.loader import load_config
 
 
 def main():
-    cfg = Config()
+    cfg = load_config("src/configs/base.yaml")
 
-    print("========== CONFIG ==========")
     print(cfg)
 
 
