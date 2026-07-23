@@ -1,4 +1,5 @@
 from src.engine.validate import validate
+from src.metrics.builder import build_metrics
 from src.datasets.builder import build_dataset
 from src.models.builder import build_model
 from src.utils.device import get_device
@@ -11,6 +12,7 @@ from src.optimizers.builder import build_optimizer
 from src.engine.train_one_epoch import train_one_epoch
 
 from src.checkpoints import CheckpointManager
+
 
 class Trainer:
 
@@ -29,6 +31,7 @@ class Trainer:
         )
         self.criterion = build_loss(cfg)
         self.optimizer = build_optimizer(cfg, self.model.parameters())
+        self.metrics = build_metrics(cfg)
         self.checkpoint = CheckpointManager(cfg)
         print("Trainer Initialized")
 
@@ -37,33 +40,35 @@ class Trainer:
 
         for epoch in range(self.cfg["train"]["epochs"]):
 
-            train_loss = train_one_epoch(
+            train_loss,train_acc  = train_one_epoch(
                 model=self.model,
                 dataloader=self.train_loader,
                 criterion=self.criterion,
                 optimizer=self.optimizer,
+                metrics=self.metrics,
                 device=self.device,
                 cfg=self.cfg,
             )
 
-            
-            val_loss = validate(
+            val_loss,val_acc = validate(
                 model=self.model,
                 dataloader=self.val_loader,
                 criterion=self.criterion,
+                metrics=self.metrics,
                 device=self.device,
             )
 
             self.checkpoint.save(
-            model=self.model,
-            optimizer=self.optimizer,
-            epoch=epoch + 1,
-            val_loss=val_loss,
+                model=self.model,
+                optimizer=self.optimizer,
+                epoch=epoch + 1,
+                val_loss=val_loss,
             )
-
 
             print(
                 f"Epoch [{epoch+1}/{self.cfg['train']['epochs']}] "
-                f"Train Loss: {train_loss:.4f}"
-                f"Val Loss: {val_loss:.4f}"
+                f"Train Loss: {train_loss:.4f} "
+                f"Train Acc: {train_acc:.4f} "
+                f"Val Loss: {val_loss:.4f} "
+                f"Val Acc: {val_acc:.4f}"
             )

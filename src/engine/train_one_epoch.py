@@ -6,12 +6,14 @@ def train_one_epoch(
     dataloader,
     criterion,
     optimizer,
+    metrics,
     device,
     cfg
 ):
     model.train()
     max_batches = cfg["train"].get("max_batches", None)
     running_loss = 0.0
+    running_acc = 0.0
 
     for batch_idx, (images, labels) in enumerate(dataloader):
         images = images.to(device)
@@ -21,6 +23,8 @@ def train_one_epoch(
         outputs = model(images)
 
         loss = criterion(outputs, labels)
+
+        acc = metrics["accuracy"](outputs, labels)
 
         loss.backward()
 
@@ -32,5 +36,6 @@ def train_one_epoch(
          break
 
     epoch_loss = running_loss / (batch_idx + 1)
+    epoch_acc = running_acc / len(dataloader)
 
-    return epoch_loss
+    return epoch_loss,epoch_acc
