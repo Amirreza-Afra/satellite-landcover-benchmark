@@ -6,12 +6,10 @@ from .registry import register_optimizer
 @register_optimizer("adamw")
 class AdamWOptimizer:
 
-    @staticmethod
-    def build(model, cfg):
-
+   @staticmethod
+   def build(parameters, cfg):
         return optim.AdamW(
-            model.parameters(),
+            parameters,
             lr=cfg["train"]["learning_rate"],
             weight_decay=cfg["optimizer"]["weight_decay"]
-
         )
