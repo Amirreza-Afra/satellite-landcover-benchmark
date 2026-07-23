@@ -226,7 +226,7 @@ __marimo__/
 data/
 
 # Trained models
-checkpoints/
+/checkpoints/
 *.pth
 *.pt
 *.ckpt
