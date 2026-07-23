@@ -7,6 +7,8 @@ from src.datasets.loader import build_dataloaders
 from src.losses.builder import build_loss
 from src.optimizers.builder import build_optimizer
 
+from src.engine.train_one_epoch import train_one_epoch
+
 
 class Trainer:
 
@@ -29,11 +31,19 @@ class Trainer:
 
     def fit(self):
         print("Training Started...")
-        print(f"Device: {self.device}")
-        print(self.criterion)
-        print(self.optimizer)
-        images, labels = next(iter(self.train_loader))
-        print(images.shape)
-        print(labels.shape)
 
+        for epoch in range(self.cfg["train"]["epochs"]):
 
+            train_loss = train_one_epoch(
+                model=self.model,
+                dataloader=self.train_loader,
+                criterion=self.criterion,
+                optimizer=self.optimizer,
+                device=self.device,
+                cfg=self.cfg,
+            )
+
+            print(
+                f"Epoch [{epoch+1}/{self.cfg['train']['epochs']}] "
+                f"Train Loss: {train_loss:.4f}"
+            )
