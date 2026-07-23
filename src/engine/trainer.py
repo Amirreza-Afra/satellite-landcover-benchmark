@@ -1,3 +1,4 @@
+from src.engine.validate import validate
 from src.datasets.builder import build_dataset
 from src.models.builder import build_model
 from src.utils.device import get_device
@@ -43,7 +44,17 @@ class Trainer:
                 cfg=self.cfg,
             )
 
+            
+            val_loss = validate(
+                model=self.model,
+                dataloader=self.val_loader,
+                criterion=self.criterion,
+                device=self.device,
+            )
+
+
             print(
                 f"Epoch [{epoch+1}/{self.cfg['train']['epochs']}] "
                 f"Train Loss: {train_loss:.4f}"
+                f"Val Loss: {val_loss:.4f}"
             )
