@@ -1,13 +1,9 @@
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
+from torchvision import transforms
 
 
-def build_val_transforms(image_size: int):
+def get_val_transforms(image_size):
 
-    return A.Compose([
-        A.Resize(image_size, image_size),
-
-        A.Normalize(),
-
-        ToTensorV2()
+    return transforms.Compose([
+        transforms.Resize((image_size, image_size)),
+        transforms.ToTensor(),
     ])

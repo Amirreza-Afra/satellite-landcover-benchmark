@@ -1,15 +1,11 @@
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
+from torchvision import transforms
 
 
-def build_train_transforms(image_size: int):
+def get_train_transforms(image_size):
 
-    return A.Compose([
-        A.Resize(image_size, image_size),
-
-        A.HorizontalFlip(p=0.5),
-
-        A.Normalize(),
-
-        ToTensorV2()
+    return transforms.Compose([
+        transforms.Resize((image_size, image_size)),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomRotation(20),
+        transforms.ToTensor(),
     ])
