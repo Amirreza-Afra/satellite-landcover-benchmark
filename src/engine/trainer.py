@@ -11,6 +11,8 @@ from src.optimizers.builder import build_optimizer
 
 from src.engine.train_one_epoch import train_one_epoch
 
+from src.schedulers.builder import build_scheduler
+
 from src.checkpoints import CheckpointManager
 
 
@@ -31,6 +33,7 @@ class Trainer:
         )
         self.criterion = build_loss(cfg)
         self.optimizer = build_optimizer(cfg, self.model.parameters())
+        self.scheduler = build_scheduler(cfg, self.optimizer)
         self.metrics = build_metrics(cfg)
         self.checkpoint = CheckpointManager(cfg)
         print("Trainer Initialized")
@@ -40,7 +43,7 @@ class Trainer:
 
         for epoch in range(self.cfg["train"]["epochs"]):
 
-            train_loss,train_acc  = train_one_epoch(
+            train_loss, train_acc = train_one_epoch(
                 model=self.model,
                 dataloader=self.train_loader,
                 criterion=self.criterion,
@@ -50,7 +53,7 @@ class Trainer:
                 cfg=self.cfg,
             )
 
-            val_loss,val_acc = validate(
+            val_loss, val_acc = validate(
                 model=self.model,
                 dataloader=self.val_loader,
                 criterion=self.criterion,
@@ -65,8 +68,13 @@ class Trainer:
                 val_loss=val_loss,
             )
 
+            self.scheduler.step()
+
+            current_lr = self.optimizer.param_groups[0]["lr"]
+
             print(
                 f"Epoch [{epoch+1}/{self.cfg['train']['epochs']}] "
+                f"LR: {current_lr:.6f} "
                 f"Train Loss: {train_loss:.4f} "
                 f"Train Acc: {train_acc:.4f} "
                 f"Val Loss: {val_loss:.4f} "
