@@ -31,3 +31,6 @@ scheduler:
 paths:
   output_dir: "./outputs"
   checkpoint_dir: "./checkpoints"
+
+loss:
+  name: cross_entropy
