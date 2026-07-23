@@ -31,6 +31,7 @@ def train_one_epoch(
         optimizer.step()
 
         running_loss += loss.item()
+        running_acc += acc
 
         if max_batches is not None and (batch_idx + 1) >= max_batches:
          break
