@@ -222,8 +222,7 @@ __marimo__/
 # Deep Learning / Research
 # ==========================
 
-# Datasets
-datasets/
+
 data/
 
 # Trained models

@@ -10,6 +10,7 @@ from src.optimizers.builder import build_optimizer
 
 from src.engine.train_one_epoch import train_one_epoch
 
+from src.checkpoints import CheckpointManager
 
 class Trainer:
 
@@ -28,6 +29,7 @@ class Trainer:
         )
         self.criterion = build_loss(cfg)
         self.optimizer = build_optimizer(cfg, self.model.parameters())
+        self.checkpoint = CheckpointManager(cfg)
         print("Trainer Initialized")
 
     def fit(self):
@@ -50,6 +52,13 @@ class Trainer:
                 dataloader=self.val_loader,
                 criterion=self.criterion,
                 device=self.device,
+            )
+
+            self.checkpoint.save(
+            model=self.model,
+            optimizer=self.optimizer,
+            epoch=epoch + 1,
+            val_loss=val_loss,
             )
 
 
